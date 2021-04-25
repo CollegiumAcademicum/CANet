@@ -55,7 +55,7 @@
         container_name: rocketchat
         depends_on:
           - mongo_rocketchat
-        enviroment:
+        environment:
           - ROOT_URL=http://chat.ca-hd.net/
           - MONGO_URL=mongodb://mongo:27017/rocketchat
           - MONGO_OPLOG_URL=mongodb://mongo:27017/local
@@ -65,13 +65,13 @@
       mongo_rocketchat:
         image: mongo:4.0
         restart: unless-started
-        volumnes:
+        volumes:
           - ./data/db/:/data/db
         command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
       keycloak:
         image: jboss/keycloak
         container_name: keycloak
-        enviroment:
+        environment:
           KEYCLOAK_USER=
           KEYCLOAK_PASSWORD=
           KEYCLOAK_FRONTEND_URL=https://keycloak.ca-hd.net/auth/
