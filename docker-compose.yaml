@@ -1,6 +1,13 @@
 ---
     version: "2.1"
     services:
+      keycloak:
+        image: jboss/keycloak
+        container_name: keycloak
+        environment:
+          - KEYCLOAK_USER=
+          - KEYCLOAK_PASSWORD=
+          - KEYCLOAK_FRONTEND_URL=https://keycloak.ca-hd.net/auth/
       swag:
         image: ghcr.io/linuxserver/swag
         container_name: swag
@@ -64,14 +71,8 @@
         restart: unless-stopped
       mongo_rocketchat:
         image: mongo:4.0
+        container_name: mongo_rocketchat
         restart: unless-stopped
         volumes:
           - ./data/db/:/data/db
         command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
-      keycloak:
-        image: jboss/keycloak
-        container_name: keycloak
-        environment:
-          - KEYCLOAK_USER=
-          - KEYCLOAK_PASSWORD=
-          - KEYCLOAK_FRONTEND_URL=https://keycloak.ca-hd.net/auth/
