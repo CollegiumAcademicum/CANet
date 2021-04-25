@@ -1,4 +1,5 @@
 apt update
+apt upgrade
 
 # Install docker and docker-compose
 apt install apt-transport-https ca-certificates curl gnupg lsb-release
