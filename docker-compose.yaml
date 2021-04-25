@@ -11,7 +11,7 @@
           - PGID=1000
           - TZ=Europe/Berlin
           - URL=ca-hd.net
-          - SUBDOMAINS=www,cloud,wiki,chat,keycloak
+          - SUBDOMAINS=www,cloud,wiki,chat,keycloak,heimdall
           - VALIDATION=http
         volumes:
           - /home/aptalca/appdata/swag:/config
@@ -50,3 +50,28 @@
         volumes:
           - /path/to/appdata/config:/config
         restart: unless-stopped
+      rocketchat:
+        image: rocketchat/rocket.chat:latest
+        container_name: rocketchat
+        depends_on:
+          - mongo_rocketchat
+        enviroment:
+          - ROOT_URL=http://chat.ca-hd.net/
+          - MONGO_URL=mongodb://mongo:27017/rocketchat
+          - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+        volumes:
+          - ./uploads:/app/uploads
+        restart: unless-stopped
+      mongo_rocketchat:
+        image: mongo:4.0
+        restart: unless-started
+        volumnes:
+          - ./data/db/:/data/db
+        command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
+      keycloak:
+        image: jboss/keycloak
+        container_name: keycloak
+        enviroment:
+          KEYCLOAK_USER=
+          KEYCLOAK_PASSWORD=
+          KEYCLOAK_FRONTEND_URL=https://keycloak.ca-hd.net/auth/
