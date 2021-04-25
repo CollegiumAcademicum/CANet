@@ -1,0 +1,52 @@
+---
+    version: "2.1"
+    services:
+      swag:
+        image: ghcr.io/linuxserver/swag
+        container_name: swag
+        cap_add:
+          - NET_ADMIN
+        environment:
+          - PUID=1000
+          - PGID=1000
+          - TZ=Europe/Berlin
+          - URL=ca-hd.net
+          - SUBDOMAINS=www,cloud,wiki,chat,keycloak
+          - VALIDATION=http
+        volumes:
+          - /home/aptalca/appdata/swag:/config
+        ports:
+          - 443:443
+          - 80:80
+        restart: unless-stopped
+      dokuwiki:
+        image: ghcr.io/linuxserver/dokuwiki
+        container_name: dokuwiki
+        environment:
+          - PUID=1000
+          - PGID=1000
+          - TZ=Europe/Berlin
+        volumes:
+          - /path/to/appdata/config:/config
+        restart: unless-stopped
+      nextcloud:
+        image: ghcr.io/linuxserver/nextcloud
+        container_name: nextcloud
+        environment:
+          - PUID=1000
+          - PGID=1000
+          - TZ=Europe/Berlin
+        volumes:
+          - /path/to/appdata:/config
+          - /path/to/data:/data
+        restart: unless-stopped
+      heimdall:
+        image: ghcr.io/linuxserver/heimdall
+        container_name: heimdall
+        environment:
+          - PUID=1000
+          - PGID=1000
+          - TZ=Europe/London
+        volumes:
+          - </path/to/appdata/config>:/config
+        restart: unless-stopped
